@@ -122,6 +122,21 @@
     </div>
 
     <div>
+      <label for="date" class="block text-sm font-medium text-gray-700"
+        >Fecha de la leyenda</label
+      >
+      <input
+        v-model="form.date"
+        type="date"
+        id="date"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <div v-if="errors.date" class="text-red-500 text-sm">
+        {{ errors.date }}
+      </div>
+    </div>
+
+    <div>
       <button
         type="button"
         @click="validateAndSubmit"
@@ -157,6 +172,7 @@
           canton: this.legend.district.canton.id,
           district: this.legend.district.id,
           image: this.legend.image,
+          date: this.legend.date,
         },
         imagePreview: null,
         imageFile: null,
@@ -172,6 +188,7 @@
           canton: "",
           district: "",
           image: "",
+          date: "",
         },
         isSubmitting: false,
       };
@@ -239,6 +256,7 @@
           canton: "",
           district: "",
           image: "",
+          date: "",
         };
 
         if (!this.form.title || this.form.title.trim() === "") {
@@ -276,6 +294,11 @@
           isValid = false;
         }
 
+        if (!this.form.date) {
+          this.errors.date = "La fecha es obligatoria";
+          isValid = false;
+        }
+
         return isValid;
       },
 
@@ -300,6 +323,10 @@
 
         if (this.imageFile) {
           changedFields.hasNewImage = true;
+        }
+
+        if (this.form.date !== this.originalForm.date) {
+          changedFields.date = this.form.date;
         }
 
         return changedFields;
@@ -327,6 +354,10 @@
             formData.append("districtId", this.form.district);
           }
 
+          if (changedFields.date) {
+            formData.append("date", this.form.date);
+          }
+
           if (this.imageFile) {
             formData.append("image", this.imageFile);
           }
@@ -336,6 +367,7 @@
             formData.has("description") ||
             formData.has("categoryId") ||
             formData.has("districtId") ||
+            formData.has("date") ||
             formData.has("image")
           ) {
             this.$emit("submit", formData);

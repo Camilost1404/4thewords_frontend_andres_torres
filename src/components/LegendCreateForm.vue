@@ -123,7 +123,7 @@
 
     <div>
       <label for="date" class="block text-sm font-medium text-gray-700"
-        >Fecha</label
+        >Fecha de la leyenda</label
       >
       <input
         v-model="form.date"
