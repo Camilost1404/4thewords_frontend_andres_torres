@@ -11,6 +11,11 @@ const routes = [
         component: () => import('@/views/LegendUpdate.vue'),
     },
     {
+        path: '/legend/create',
+        name: 'LegendCreate',
+        component: () => import('@/views/LegendCreate.vue'),
+    },
+    {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
         component: () => import('@/views/NotFound.vue'),

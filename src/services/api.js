@@ -34,6 +34,16 @@ export const updateLegend = async (id, data) => {
     }
 }
 
+export const createLegend = async (data) => {
+    try {
+        const response = await api.post('/legends/', data);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating legend:', error);
+        return null;
+    }
+}
+
 export const deleteLegend = async (id) => {
     try {
         const response = await api.delete(`/legends/${id}/`);
