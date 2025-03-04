@@ -1,6 +1,12 @@
 <template>
-  <div class="container mx-auto p-4">
-    <h1 class="text-3xl font-bold mb-6">Actualizar Leyenda</h1>
+  <div class="container mx-auto p-4 relative">
+    <button
+      @click="$router.push('/')"
+      class="absolute left-4 top-4 hover:bg-gray-300 text-gray-700 rounded-full p-2"
+    >
+      <i class="mdi mdi-arrow-left"></i>
+    </button>
+    <h1 class="text-3xl font-bold mb-6 text-center">Actualizar Leyenda</h1>
     <LegendUpdateForm
       v-if="legend"
       :legend="legend"
