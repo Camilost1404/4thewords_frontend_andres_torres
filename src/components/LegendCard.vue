@@ -56,11 +56,6 @@
         required: true,
       },
     },
-    data() {
-      return {
-        isExpanded: false,
-      };
-    },
     computed: {
       formattedDate() {
         return formatRelativeDate(this.legend.created_at);
@@ -74,9 +69,6 @@
       },
     },
     methods: {
-      toggleExpand() {
-        this.isExpanded = !this.isExpanded;
-      },
       async onDelete() {
         const result = await this.$swal.fire({
           title: "¿Estás seguro?",
@@ -92,7 +84,6 @@
         if (result.isConfirmed) {
           this.$emit("delete", this.legend.id);
         }
-
       },
       onUpdate() {
         this.$emit("update", this.legend.id);

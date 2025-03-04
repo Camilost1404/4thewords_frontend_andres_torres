@@ -14,6 +14,26 @@ export const getLegends = async (filters = {}) => {
     }
 };
 
+export const getLegendById = async (id) => {
+    try {
+        const response = await api.get(`/legends/${id}/`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching legend:', error);
+        return null;
+    }
+}
+
+export const updateLegend = async (id, data) => {
+    try {
+        const response = await api.patch(`/legends/${id}/`, data);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating legend:', error);
+        return null;
+    }
+}
+
 export const deleteLegend = async (id) => {
     try {
         const response = await api.delete(`/legends/${id}/`);
@@ -33,3 +53,13 @@ export const getCategories = async () => {
         return [];
     }
 }
+
+export const getProvinces = async () => {
+    try {
+        const response = await api.get("/provinces/");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching provinces:", error);
+        return [];
+    }
+};

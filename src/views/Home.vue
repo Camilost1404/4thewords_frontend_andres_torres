@@ -12,57 +12,51 @@
 </template>
 
 <script>
-  import { ref, onMounted } from "vue";
   import { getLegends, deleteLegend } from "@/services/api";
-  import Swal from "sweetalert2";
   import SearchBar from "@/components/SearchBar.vue";
   import FiltersSection from "@/components/FiltersSection.vue";
   import LegendList from "@/components/LegendList.vue";
-  import { useRouter } from "vue-router";
 
   export default {
     components: { SearchBar, FiltersSection, LegendList },
-    setup() {
-      const legends = ref([]);
-      const filteredLegends = ref([]);
-      const filters = ref({});
-      const router = useRouter();
-
-      const fetchLegends = async () => {
-        legends.value = await getLegends(filters.value);
-        filteredLegends.value = legends.value;
+    data() {
+      return {
+        legends: [],
+        filteredLegends: [],
+        filters: {},
       };
-
-      const handleSearch = (query) => {
+    },
+    methods: {
+      async fetchLegends() {
+        this.legends = await getLegends(this.filters);
+        this.filteredLegends = this.legends;
+      },
+      handleSearch(query) {
         if (query && query.trim()) {
-          filters.value.title = query;
+          this.filters.title = query;
         } else {
-          delete filters.value.title;
+          delete this.filters.title;
         }
-        fetchLegends();
-      };
-
-      const handleFilter = (newFilters) => {
+        this.fetchLegends();
+      },
+      handleFilter(newFilters) {
         Object.keys(newFilters).forEach((key) => {
           if (newFilters[key] === "") {
-            delete filters.value[key];
+            delete this.filters[key];
           } else {
-            filters.value[key] = newFilters[key];
+            this.filters[key] = newFilters[key];
           }
         });
-        fetchLegends();
-      };
-
-      const onUpdate = (id) => {
-        router.push(`legend/${id}`);
-      };
-
-      const onDelete = (id) => {
-        const response = deleteLegend(id);
+        this.fetchLegends();
+      },
+      onUpdate(id) {
+        this.$router.push(`legend/${id}`);
+      },
+      async onDelete(id) {
+        const response = await deleteLegend(id);
 
         if (response) {
-          // Si la respuesta es válida, muestra un mensaje de éxito
-          Swal.fire({
+          this.$swal.fire({
             icon: "success",
             title: "¡Eliminado!",
             text: "La leyenda ha sido eliminada correctamente.",
@@ -72,10 +66,9 @@
             timer: 3000,
             timerProgressBar: true,
           });
-          fetchLegends(); // Recarga la lista de leyendas
+          this.fetchLegends();
         } else {
-          // Si la respuesta es null, muestra un mensaje de error
-          Swal.fire({
+          this.$swal.fire({
             icon: "error",
             title: "Error",
             text: "No se pudo eliminar la leyenda.",
@@ -86,11 +79,10 @@
             timerProgressBar: true,
           });
         }
-      };
-
-      onMounted(fetchLegends);
-
-      return { filteredLegends, handleSearch, handleFilter, onDelete, onUpdate};
+      },
+    },
+    mounted() {
+      this.fetchLegends();
     },
   };
 </script>
