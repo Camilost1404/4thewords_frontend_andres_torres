@@ -19,7 +19,6 @@
     methods: {
       onSearch() {
         if (this.timeoutId) {
-          console.log("first");
           clearTimeout(this.timeoutId);
         }
 

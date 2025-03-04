@@ -36,7 +36,13 @@
       };
 
       const handleFilter = (newFilters) => {
-        filters.value = { ...filters.value, ...newFilters };
+        Object.keys(newFilters).forEach((key) => {
+          if (newFilters[key] === "") {
+            delete filters.value[key];
+          } else {
+            filters.value[key] = newFilters[key];
+          }
+        });
         fetchLegends();
       };
 
