@@ -1,37 +1,98 @@
 <template>
-    <div>
-        <a href="https://vite.dev" target="_blank">
-            <img src="/vite.svg" class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://vuejs.org/" target="_blank">
-            <img src="@/assets/vue.svg" class="logo vue" alt="Vue logo" />
-        </a>
+  <div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-6">Leyendas</h1>
+    <div class="flex items-center justify-between mb-6 gap-4">
+      <SearchBar @search="handleSearch" />
+      <button
+        @click="$router.push('/legend/create')"
+        class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition"
+      >
+        <i class="mdi mdi-plus"></i>
+      </button>
     </div>
-    <HelloWorld msg="Vite + Vue" />
+    <FiltersSection @filter="handleFilter" class="mb-6" />
+    <LegendList
+      @delete="onDelete"
+      @update="onUpdate"
+      :legends="filteredLegends"
+    />
+  </div>
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld.vue'
+  import { getLegends, deleteLegend } from "@/services/api";
+  import SearchBar from "@/components/SearchBar.vue";
+  import FiltersSection from "@/components/FiltersSection.vue";
+  import LegendList from "@/components/LegendList.vue";
 
-export default {
-    name: 'Home',
-    components: {
-        HelloWorld
-    }
-}
+  export default {
+    components: { SearchBar, FiltersSection, LegendList },
+    data() {
+      return {
+        legends: [],
+        filteredLegends: [],
+        filters: {},
+      };
+    },
+    methods: {
+      async fetchLegends() {
+        this.legends = await getLegends(this.filters);
+        this.filteredLegends = this.legends;
+      },
+      handleSearch(query) {
+        if (query && query.trim()) {
+          this.filters.title = query;
+        } else {
+          delete this.filters.title;
+        }
+        this.fetchLegends();
+      },
+      handleFilter(newFilters) {
+        Object.keys(newFilters).forEach((key) => {
+          if (newFilters[key] === "") {
+            delete this.filters[key];
+          } else {
+            this.filters[key] = newFilters[key];
+          }
+        });
+        this.fetchLegends();
+      },
+      onUpdate(id) {
+        this.$router.push(`legend/${id}`);
+      },
+      async onDelete(id) {
+        const response = await deleteLegend(id);
+
+        if (response) {
+          this.$swal.fire({
+            icon: "success",
+            title: "¡Eliminado!",
+            text: "La leyenda ha sido eliminada correctamente.",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+          });
+          this.fetchLegends();
+        } else {
+          this.$swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo eliminar la leyenda.",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+          });
+        }
+      },
+    },
+    mounted() {
+      this.fetchLegends();
+    },
+  };
 </script>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<style></style>

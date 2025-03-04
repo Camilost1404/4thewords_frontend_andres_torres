@@ -26,6 +26,13 @@ Aprende más sobre el soporte de IDE para Vue en la [Guía de Escalado de Vue Do
     yarn install
     ```
 
+## Configuración de variables de entorno
+
+Crea un archivo `.env` en la raíz del proyecto y añade las variables necesarias. Por ejemplo:
+```env
+VITE_API_URL=https://api.example.com
+```
+
 ## Ejecución del proyecto
 
 Para iniciar el servidor de desarrollo, ejecuta:
