@@ -4,7 +4,13 @@
       No hay leyendas disponibles.
     </div>
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <LegendCard v-for="legend in legends" :key="legend.id" :legend="legend" />
+      <LegendCard
+        @delete="onDelete"
+        @update="onUpdate"
+        v-for="legend in legends"
+        :key="legend.id"
+        :legend="legend"
+      />
     </div>
   </div>
 </template>
@@ -18,6 +24,14 @@
       legends: {
         type: Array,
         required: true,
+      },
+    },
+    methods: {
+      onDelete(id) {
+        this.$emit("delete", id);
+      },
+      onUpdate(id) {
+        this.$emit("update", id);
       },
     },
   };

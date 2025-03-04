@@ -14,6 +14,16 @@ export const getLegends = async (filters = {}) => {
     }
 };
 
+export const deleteLegend = async (id) => {
+    try {
+        const response = await api.delete(`/legends/${id}/`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting legend:', error);
+        return null;
+    }
+};
+
 export const getCategories = async () => {
     try {
         const response = await api.get('/categories/');
