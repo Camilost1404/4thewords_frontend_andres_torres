@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+  <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between">
     <img
       :src="legend.image"
       :alt="legend.title"
@@ -24,7 +24,7 @@
           <strong>Distrito:</strong> {{ legend.district.name }}
         </p>
         <p class="text-sm text-gray-600">
-          <strong>Fecha de creación:</strong> {{ formattedDate }}
+          <strong>Fecha de la leyenda:</strong> {{ formattedDate }}
         </p>
       </div>
 
@@ -42,12 +42,16 @@
           <i class="mdi mdi-delete"></i>
         </button>
       </div>
+
+    </div>
+    <div class="p-4 flex justify-end text-sm text-gray-500">
+      Creado {{ formattedCreationDate }}
     </div>
   </div>
 </template>
 
 <script>
-  import { formatRelativeDate } from "@/utils/dateUtils";
+  import { formatRelativeDate, formatDate } from "@/utils/dateUtils";
 
   export default {
     props: {
@@ -57,8 +61,11 @@
       },
     },
     computed: {
+      formattedCreationDate() {
+        return formatRelativeDate(this.legend.createdAt);
+      },
       formattedDate() {
-        return formatRelativeDate(this.legend.created_at);
+        return formatDate(this.legend.date);
       },
       showReadMore() {
         const descriptionElement = this.$refs.description;

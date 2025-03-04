@@ -12,3 +12,15 @@ export const formatRelativeDate = (dateString) => {
     if (minutes > 0) return `Hace ${minutes} minuto${minutes > 1 ? 's' : ''}`;
     return 'Hace unos segundos';
 };
+
+export const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split('-').map(Number);
+
+    const date = new Date(Date.UTC(year, month - 1, day));
+
+    const formattedDay = date.getUTCDate();
+    const formattedMonth = date.toLocaleString('es-ES', { month: 'long', timeZone: 'UTC' });
+    const formattedYear = date.getUTCFullYear();
+
+    return `${formattedDay} ${formattedMonth} ${formattedYear}`;
+};
