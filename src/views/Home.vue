@@ -27,7 +27,11 @@
       };
 
       const handleSearch = (query) => {
-        filters.value.title = query;
+        if (query && query.trim()) {
+          filters.value.title = query;
+        } else {
+          delete filters.value.title;
+        }
         fetchLegends();
       };
 
@@ -43,5 +47,4 @@
   };
 </script>
 
-<style>
-</style>
+<style></style>

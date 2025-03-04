@@ -1,6 +1,11 @@
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <LegendCard v-for="legend in legends" :key="legend.id" :legend="legend" />
+  <div>
+    <div v-if="legends.length === 0" class="text-center text-gray-500">
+      No hay leyendas disponibles.
+    </div>
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <LegendCard v-for="legend in legends" :key="legend.id" :legend="legend" />
+    </div>
   </div>
 </template>
 

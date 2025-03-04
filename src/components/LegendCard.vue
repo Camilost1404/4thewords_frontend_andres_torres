@@ -12,6 +12,12 @@
         <strong>Categoría:</strong> {{ legend.category.name }}
       </p>
       <p class="text-sm text-gray-600">
+        <strong>Provincia:</strong> {{ legend.district.canton.province.name }}
+      </p>
+      <p class="text-sm text-gray-600">
+        <strong>Cantón:</strong> {{ legend.district.canton.name }}
+      </p>
+      <p class="text-sm text-gray-600">
         <strong>Distrito:</strong> {{ legend.district.name }}
       </p>
       <p class="text-sm text-gray-600">

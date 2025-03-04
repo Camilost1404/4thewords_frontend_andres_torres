@@ -13,12 +13,25 @@
     data() {
       return {
         searchQuery: "",
+        timeoutId: null,
       };
     },
     methods: {
       onSearch() {
-        this.$emit("search", this.searchQuery);
+        if (this.timeoutId) {
+          console.log("first");
+          clearTimeout(this.timeoutId);
+        }
+
+        this.timeoutId = setTimeout(() => {
+          this.$emit("search", this.searchQuery);
+        }, 500);
       },
+    },
+    onmounted() {
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+      }
     },
   };
 </script>
